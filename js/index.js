@@ -38,4 +38,6 @@ var Start = Backbone.View.extend({
 var controller = new Controller(); // Создаём контроллер
 var start = new Start();
 
-Backbone.history.start();  // Запускаем HTML5 History push
+$(document).ready(function() {
+	Backbone.history.start();  // Запускаем HTML5 History push
+});

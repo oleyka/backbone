@@ -1,3 +1,17 @@
+var UserNameModel = Backbone.Model.extend({ // Модель пользователя
+	defaults: {
+		'name': ""
+	}
+});
+
+var Family = Backbone.Collection.extend({ // Коллекция пользователей
+	model: UserNameModel,
+	checkUser: function (username) { // Проверка пользователя
+		var findResult = this.find(function (user) { return user.get('name') == username })
+		return findResult != null;
+	},
+});
+
 var AppState = Backbone.Model.extend({
     defaults: {
         'username': "",
@@ -25,7 +39,7 @@ var Block = Backbone.View.extend({
 
 	check: function () {
 		var username = this.$el.find("input:text").val();
-		var find = (_.detect(Family, function (elem) { return elem == username })); // Проверка имени пользователя
+		var find = MyFamily.checkUser(username);
 		appState.set({ // Сохранение имени пользователя и состояния
 			"state": find ? "success" : "error",
 			"username": username
@@ -62,7 +76,11 @@ var Controller = Backbone.Router.extend({
 });
 
 // -------------------------------- //
-var Family = ["Vasya", "Petya", "Katya"]; // Моя семья
+var MyFamily = new Family([ // Моя семья
+	{ 'name': "Vasya" },
+	{ 'name': "Petya" },
+	{ 'name': "Katya" }
+]);
 
 var controller = new Controller(); // Создаём контроллер
 var appState = new AppState(); // AppState is a Model extended with a 'state'
